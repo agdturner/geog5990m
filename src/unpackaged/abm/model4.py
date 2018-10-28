@@ -66,21 +66,25 @@ print("mindistance=", mindistance)
 end = time.clock()
 print("time = " + str(end - start))
 
-# Print agent with the max x
-print(max(agents, key=operator.itemgetter(1)))
+# Print agent with the max y, min y, max x, min x
+maxyAgent = max(agents, key=operator.itemgetter(0))
+minyAgent = min(agents, key=operator.itemgetter(0))
+maxxAgent = max(agents, key=operator.itemgetter(1))
+minxAgent = min(agents, key=operator.itemgetter(1))
 # Print agent with the max y
-print(max(agents, key=operator.itemgetter(0)))
+print(maxyAgent)
+print(minyAgent)
+print(maxxAgent)
+print(minxAgent)
 
 matplotlib.pyplot.ylim(0, rangey)
 matplotlib.pyplot.xlim(0, rangex)
 # Plot all agents
 for i in range(num_of_agents):
     matplotlib.pyplot.scatter(agents[i][1],agents[i][0])
-# Plot agent with the max y blue
-m = max(agents, key=operator.itemgetter(0))
-matplotlib.pyplot.scatter(m[1],m[0], color='blue')
-# Plot agent with the max x red 
-# (N.B. This may be the same agentas just plotted in blue!)
-m = max(agents, key=operator.itemgetter(1))
-matplotlib.pyplot.scatter(m[1],m[0], color='red')
+# Over plot agent with the max y blue, min y black, max x red, min red pink
+matplotlib.pyplot.scatter(maxyAgent[1],maxyAgent[0], color='blue')
+matplotlib.pyplot.scatter(minyAgent[1],minyAgent[0], color='black')
+matplotlib.pyplot.scatter(maxxAgent[1],maxxAgent[0], color='red')
+matplotlib.pyplot.scatter(minxAgent[1],minxAgent[0], color='pink')
 matplotlib.pyplot.show()
