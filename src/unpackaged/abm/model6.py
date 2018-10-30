@@ -1,6 +1,6 @@
 import csv
 import matplotlib
-import agentframework
+import agentframework6 as af
 #import random
 #import operator
 import matplotlib.pyplot
@@ -49,7 +49,7 @@ agents = []
 
 # Make the agents.
 for i in range(num_of_agents):
-    agents.append(agentframework.Agent(environment))
+    agents.append(af.Agent(environment))
 
 # Move the agents.
 for j in range(num_of_iterations):
@@ -102,8 +102,3 @@ with open("dataout2.txt", "a") as f3:
     #f3.write("\n")
     f3.flush  
 f3.close
-
-# Can you get the agents to sick up their store in a location if 
-# they've been greedy guts and eaten more than 100 units? 
-# (note that when you add or subtract from the map, the colours will 
-# re-scale).

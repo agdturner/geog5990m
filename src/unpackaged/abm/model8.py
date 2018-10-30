@@ -1,37 +1,46 @@
 import csv
 import matplotlib
-import agentframework7
+import agentframework7 as af
 import random
 #import operator
 import matplotlib.pyplot
 from sys import argv
 import matplotlib.animation 
 
+'''
+Step 1: Initialise parameters
+'''
 print(argv)
-# set parameters from argv
-num_of_agents = int(argv[1])
-num_of_iterations = int(argv[2])
-neighbourhood = int(argv[3])
-random_seed = int(argv[4])
-'''
-num_of_agents = 10
-num_of_iterations = 1000
-neighbourhood = 20
-random_seed = 0
-'''
+if len(argv) < 5:
+    num_of_agents = 10
+    num_of_iterations = 1000
+    neighbourhood = 20
+    random_seed = 0
+    print("argv does not contain the expected number of arguments")
+    print("len(argv)", len(argv))
+    print("expected len(argv) 5")
+    print("expecting:")
+    print("argv[1] as a integer number for num_of_agents")
+    print("argv[1] as a integer number for num_of_iterations")
+    print("argv[1] as a integer number for neighbourhood")
+    print("argv[1] as a integer number for random_seed for setting the random seed")
+else:
+    # set parameters from argv
+    num_of_agents = int(argv[1])
+    num_of_iterations = int(argv[2])
+    neighbourhood = int(argv[3])
+    random_seed = int(argv[4])
 print("num_of_agents", str(num_of_agents))
 print("num_of_iterations", str(num_of_iterations))
 print("neighbourhood", str(neighbourhood))
 print("random_seed", str(random_seed))
-
 random.seed(random_seed)
 
-"""
-Initialise environment this will contain data about the spatial environment in 
-which agents act.
-"""
+'''
+Step 2: Initialise environment this will contain data about the spatial 
+environment in which agents act.
+'''
 environment = []
- 
 # read csv into environment
 '''
 f = open('in.txt', newline='') 
@@ -58,26 +67,17 @@ with open('in.txt', newline='') as f:
         environment.append(rowlist)
 
 '''
-def distance_between(agents_row_a, agents_row_b):
-     return (((agents_row_a.getx() - agents_row_b.getx()))**2) + 
-     ((agents_row_a.gety() - agents_row_b.gety())**2))**0.5
+Step 3: Initialise agents.
 '''
-'''
-def distance_between(agents_row_a, agents_row_b):
-     return (((agents_row_a.x() - agents_row_b.x()))**2) + 
-     ((agents_row_a.y() - agents_row_b.y())**2))**0.5
-'''
-
 agents = []
-
 # Make the agents.
 for i in range(num_of_agents):
     # Add 1 to random seed to get each agent initialised and moving differently
     random_seed += 1
-    agents.append(agentframework7.Agent(environment, agents, random_seed))
-
+    agents.append(af.Agent(environment, agents, random_seed))
 # Test getting another agent from an agent
 print(agents[0].agents[1])
+
 
 fig = matplotlib.pyplot.figure(figsize=(7, 7))
 ax = fig.add_axes([0, 0, 1, 1])
@@ -143,12 +143,6 @@ for i in range(num_of_agents):
     matplotlib.pyplot.scatter(agents[i].getx(),agents[i].gety())
 '''
 matplotlib.pyplot.show()
-
-'''
-for agents_row_a in agents:
-     for agents_row_b in agents:
-         distance = distance_between(agents_row_a, agents_row_b) 
-'''
         
 # Write out the environment as a file
 '''
@@ -180,8 +174,3 @@ with open("dataout2.txt", "a") as f3:
     #f3.write("\n")
     f3.flush  
 f3.close
-
-# Can you get the agents to sick up their store in a location if 
-# they've been greedy guts and eaten more than 100 units? 
-# (note that when you add or subtract from the map, the colours will 
-# re-scale).

@@ -1,11 +1,11 @@
-import agentframework
+import agentframework5 as af
 #import random
 #import operator
 import matplotlib.pyplot
 
-a = agentframework.Agent()
+a = af.Agent()
 print(type(a)) #  Print the type of aTo check the class:
-print(isinstance(a, agentframework.Agent)) # Check if a is an agentframework.Agent type
+print(isinstance(a, af.Agent)) # Check if a is an af.Agent type
 print(a)
 print(a.x)
 print(a.y)
@@ -23,7 +23,7 @@ agents = []
 
 # Make the agents.
 for i in range(num_of_agents):
-    agents.append(agentframework.Agent())
+    agents.append(af.Agent())
 
 # Move the agents.
 for j in range(num_of_iterations):
