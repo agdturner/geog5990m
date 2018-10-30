@@ -1,14 +1,31 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+__version__  1.0.0
+"""
 import csv
 import matplotlib
 import agentframework6 as af
-#import random
-#import operator
 import matplotlib.pyplot
 
-environment = []
- 
-# read csv into environment
 '''
+Step 1: Initialise parameters.
+'''
+print("Step 1: Initialise parameters.")
+num_of_agents = 10
+num_of_iterations = 1000
+print("num_of_agents",num_of_agents)
+print("num_of_iterations",num_of_iterations)
+
+'''
+Step 2: Initialise environment this will contain data about the spatial 
+environment in which agents act.
+'''
+print("Step 2: Initialise environment this will contain data about the",
+      "spatial environment in which agents act.")
+environment = []
+# read csv into environment
+''' This way works BUT see below...
 f = open('in.txt', newline='') 
 reader = csv.reader(f, quoting=csv.QUOTE_NONNUMERIC)
 for row in reader: # A list of rows
@@ -33,30 +50,28 @@ with open('in.txt', newline='') as f:
         environment.append(rowlist)
 
 '''
-def distance_between(agents_row_a, agents_row_b):
-     return (((agents_row_a.getx() - agents_row_b.getx()))**2) + 
-     ((agents_row_a.gety() - agents_row_b.gety())**2))**0.5
+Step 3: Initialise agents.
 '''
-'''
-def distance_between(agents_row_a, agents_row_b):
-     return (((agents_row_a.x() - agents_row_b.x()))**2) + 
-     ((agents_row_a.y() - agents_row_b.y())**2))**0.5
-'''
-
-num_of_agents = 10
-num_of_iterations = 1000
+print("Step 3: Initialise agents.")
 agents = []
-
 # Make the agents.
 for i in range(num_of_agents):
     agents.append(af.Agent(environment))
 
+'''
+Step 4: Agents act.
+'''
+print("Step 4: Agents act.")
 # Move the agents.
 for j in range(num_of_iterations):
     for i in range(num_of_agents):
         agents[i].move()
         agents[i].eat()
-
+        
+'''
+Step 5: Plot Agents on Environment.
+'''
+print("Step 5: Plot Agents on Environment.")
 #matplotlib.pyplot.xlim(0, 99)
 #matplotlib.pyplot.ylim(0, 99)
 matplotlib.pyplot.xlim(0, len(environment))
@@ -65,21 +80,22 @@ matplotlib.pyplot.imshow(environment)
 for i in range(num_of_agents):
     matplotlib.pyplot.scatter(agents[i].getx(),agents[i].gety())
 matplotlib.pyplot.show()
-
-'''
-for agents_row_a in agents:
-     for agents_row_b in agents:
-         distance = distance_between(agents_row_a, agents_row_b) 
-'''
         
-# Write out the environment as a file
 '''
+Step 5: Write out the environment to the file dataout.csv.
+'''
+print("Step 5: Write out the environment to the file dataout.csv.")
+'''  This way works BUT see below...
 f2 = open('dataout.csv', 'w', newline='') 
 writer = csv.writer(f2, delimiter=' ')
 for row in environment: 
     writer.writerow(row) # List of values.
 f2.close() 
 '''
+# The following way is better as:
+# The 'with' keyword sets up a Context Manager, which temporarily deals with 
+# how the code runs. This closes the file automatically when the clause is 
+# left. 
 with open('dataout.csv', 'w', newline='') as f2:
     writer = csv.writer(f2, delimiter=' ')
     for row in environment:
@@ -89,13 +105,17 @@ with open('dataout.csv', 'w', newline='') as f2:
             print(value)
             #writer.write(value)
         '''
-        
-# Calculate total amount stored by all the agents
+
+'''
+Step 6: Calculate total amount stored by all the agents and append this to the
+file dataout2.txt.
+'''
+print("Step 6: Calculate total amount stored by all the agents and append",
+      "this to the file dataout2.txt.")
 total = 0
 for a in agents:
     total += a.store
     #print(total)
-
 # Append total to dataout2.txt
 with open("dataout2.txt", "a") as f3:
     f3.write(str(total) + "\n")

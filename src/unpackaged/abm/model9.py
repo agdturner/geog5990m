@@ -1,3 +1,10 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+__version__  0.1.0
+As with model8.py I am wanting to get the agents wandering about on the 
+Environment, but this needs more work...
+"""
 import agentframework9 as af
 import random
 #import operator
@@ -18,7 +25,8 @@ import bs4
 '''
 Step 1: Initialise parameters
 '''
-print(argv)
+print("Step 1: Initialise parameters")
+print("argv", argv)
 if len(argv) < 5:
     num_of_agents = 10
     num_of_iterations = 1000
@@ -45,14 +53,16 @@ print("random_seed", str(random_seed))
 random.seed(random_seed)
 
 '''
-Step 2: Initialise GUI main window
+Step 2: Initialise GUI main window.
 '''
+print("Step 2: Initialise GUI main window")
 root = tkinter.Tk() # Main window.
 root.wm_title("Model")
 
 '''
-Step 3: Get data from the web
+Step 3: Get data from the web.
 '''
+print("Step 3: Get data from the web.")
 url = 'https://www.geog.leeds.ac.uk/courses/computing/practicals/python/agent-framework/part9/data.html'
 r = requests.get('http://www.geog.leeds.ac.uk/courses/computing/practicals/python/agent-framework/part9/data.html')
 content = r.text
@@ -91,23 +101,10 @@ for td in tds:
 Step 4: Initialise environment this will contain data about the spatial 
 environment in which agents act.
 '''
+print("Step 4: Initialise environment this will contain data about the",
+      "spatial environment in which agents act.")
 environment = []
 # read csv into environment
-'''
-f = open('in.txt', newline='') 
-reader = csv.reader(f, quoting=csv.QUOTE_NONNUMERIC)
-for row in reader: # A list of rows
-    rowlist = []
-    for value in row: # A list of values
-        rowlist.append(value)
-        #print(value)
-    environment.append(rowlist)
-f.close()
-'''
-# The following way is better as:
-# The 'with' keyword sets up a Context Manager, which temporarily deals with 
-# how the code runs. This closes the file automatically when the clause is 
-# left. 
 with open('in.txt', newline='') as f:
     reader = csv.reader(f, quoting=csv.QUOTE_NONNUMERIC)
     for row in reader:
@@ -120,6 +117,7 @@ with open('in.txt', newline='') as f:
 '''
 Step 5: Initialise agents.
 '''
+print("Step 5: Initialise agents.")
 agents = []
 # Make the agents.
 for i in range(num_of_agents):
@@ -128,10 +126,13 @@ for i in range(num_of_agents):
     # Add 1 to random seed to get each agent initialised and moving differently
     random_seed += 1
     agents.append(af.Agent(environment, agents, random_seed, y, x))
+
 '''
-# Test getting another agent from an agent
-print(agents[0].agents[1])
+Step 4: Animate acting agents.
 '''
+print("Step 4: Animate acting agents.")
+fig = matplotlib.pyplot.figure(figsize=(7, 7))
+ax = fig.add_axes([0, 0, 1, 1])
 
 carry_on = True
 
@@ -145,14 +146,11 @@ def update(frame_number):
         if (j % 10 == 0):
             print("iteration", j)
         # Shuffle agents
-        #agents = random.shuffle(agents)
-        #random.shuffle(agents[, random.random()])
         random.shuffle(agents)
         for i in range(num_of_agents):
             agents[i].move()
             agents[i].eat()
             agents[i].share_with_neighbours(neighbourhood)
-        
         # Stop if all agents have more than 50 store
         for i in range(num_of_agents):
             half_full_agent_count = 0
@@ -161,14 +159,6 @@ def update(frame_number):
         if (half_full_agent_count == num_of_agents):
             carry_on = False
             print("stopping condition")
-                
-        # Stop randomly
-        '''
-        if random.random() < 0.1:
-            carry_on = False
-            print("stopping condition")
-        '''
-        
         for i in range(num_of_agents):
             matplotlib.pyplot.scatter(agents[i].getx(),agents[i].gety())
             #print(agents[i].getx(),agents[i].gety())
@@ -180,15 +170,10 @@ def gen_function(b = [0]):
         yield a			# Returns control and waits next call.
         a = a + 1
 
-fig = matplotlib.pyplot.figure(figsize=(7, 7))
-ax = fig.add_axes([0, 0, 1, 1])
-
 #animation = matplotlib.animation.FuncAnimation(fig, update, interval=1)
 #animation = matplotlib.animation.FuncAnimation(fig, update, interval=1, repeat=False, frames=10)
 animation = matplotlib.animation.FuncAnimation(fig, update, interval=1, repeat=False, frames=num_of_iterations)
 
-#matplotlib.pyplot.xlim(0, 99)
-#matplotlib.pyplot.ylim(0, 99)
 '''
 matplotlib.pyplot.xlim(0, len(environment))
 matplotlib.pyplot.ylim(0, len(environment[0]))
@@ -198,43 +183,7 @@ for i in range(num_of_agents):
 '''
 
 #matplotlib.pyplot.show()
-
-'''
-for agents_row_a in agents:
-     for agents_row_b in agents:
-         distance = distance_between(agents_row_a, agents_row_b) 
-'''
         
-# Write out the environment as a file
-'''
-f2 = open('dataout.csv', 'w', newline='') 
-writer = csv.writer(f2, delimiter=' ')
-for row in environment: 
-    writer.writerow(row) # List of values.
-f2.close() 
-'''
-with open('dataout.csv', 'w', newline='') as f2:
-    writer = csv.writer(f2, delimiter=' ')
-    for row in environment:
-        writer.writerow(row)
-        '''
-        for value in row:
-            print(value)
-            #writer.write(value)
-        '''
-        
-# Calculate total amount stored by all the agents
-total = 0
-for a in agents:
-    total += a.store
-    #print(total)
-
-# Append total to dataout2.txt
-with open("dataout2.txt", "a") as f3:
-    f3.write(str(total) + "\n")
-    #f3.write("\n")
-    f3.flush  
-f3.close
 
 def run():
     animation = matplotlib.animation.FuncAnimation(fig, update, frames=gen_function, repeat=False)

@@ -1,3 +1,8 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+__version__  1.0.0
+"""
 import random
 
 class Agent():
@@ -74,9 +79,9 @@ class Agent():
         #print(str(self.store))
         if self.store > 100:
             self.environment[self._y][self._x] = self.environment[self._y][self._x] + 100
-            print(str(self))
+            #print(str(self))
             self.store = 0
-            print(str(self))
+            #print(str(self))
             #self.__str__.__call__
             #print("Location x =", self._x, "y =", self._y, "store =", str(self.store))
         
