@@ -3,9 +3,8 @@ import random
 class Agent():
     
     #def __init__(self, environment):
-    def __init__(self, environment, agents):
+    def __init__(self, environment):
         self.environment = environment
-        self.agents = agents
         self.store = 0
         # Find out the size of environment inside the agents
         self.width = len(environment);
@@ -14,20 +13,6 @@ class Agent():
         self._y = random.randint(0,self.height)
         #self._x = random.randint(0,99)
         #self._y = random.randint(0,99)
-    
-    '''
-    def __init__ (self):
-        pass
-        self._x = random.randint(0,99)
-        self._y = random.randint(0,99)
-    '''
-    
-    '''    
-    def __init__ (self, x, y):
-        pass
-        self.x = x
-        self.y = y
-    '''
     
     def move(self):
         '''
