@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 """
 __version__  0.1.0
+I am wanting to get the agents wandering about on the Environment, but this 
+needs more work...
 """
 import csv
 import matplotlib
