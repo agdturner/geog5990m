@@ -91,7 +91,9 @@ mindistance = maxdistance
 for i in range(num_of_agents):
     #for j in range(num_of_agents): # Timed with and without this optimisation
     for j in range(i, num_of_agents):
+    #for j in range(num_of_agents):
         #if (i != j):  # Faster without this if statement!
+        #if (i > j):
             # print("i=", i,"j=", j)
             distance = distance_between(agents[i], agents[j])
             maxdistance = max(maxdistance, distance)

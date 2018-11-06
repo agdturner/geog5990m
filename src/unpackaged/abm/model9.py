@@ -13,14 +13,15 @@ import csv
 import matplotlib
 matplotlib.use('TkAgg') # Needs to be before any other matplotlb imports
 #matplotlib.use('TkInter')
-import matplotlib.pyplot
-import matplotlib.animation
+import matplotlib.pyplot as pyplot
+import matplotlib.animation as anim
 import tkinter
 import requests
 import bs4
 #import certifi
 #import urllib.request
 #from bs4 import BeautifulSoup as soup
+#import sys
 
 '''
 Step 1: Initialise parameters
@@ -70,6 +71,8 @@ soup = bs4.BeautifulSoup(content, 'html.parser')
 td_xs = soup.find_all(attrs={"class" : "x"})
 td_ys = soup.find_all(attrs={"class" : "y"})
 td_zs = soup.find_all(attrs={"class" : "z"})
+# Note that there is a new range in the data read in and agents are only 
+# initialise in the first 100 by 100 npart of enviroement
 ''' print test
 #print(td_xs) 
 for td in td_xs:
@@ -121,6 +124,9 @@ print("Step 5: Initialise agents.")
 agents = []
 # Make the agents.
 for i in range(num_of_agents):
+    j = i
+    while (i > len(td_ys)): # ensure we don't fall off the end of the array
+        j -= len(td_ys)
     y = int(td_ys[i].text)
     x = int(td_xs[i].text)
     # Add 1 to random seed to get each agent initialised and moving differently
@@ -131,65 +137,66 @@ for i in range(num_of_agents):
 Step 4: Animate acting agents.
 '''
 print("Step 4: Animate acting agents.")
-fig = matplotlib.pyplot.figure(figsize=(7, 7))
+fig = pyplot.figure(figsize=(7, 7))
 ax = fig.add_axes([0, 0, 1, 1])
 
 carry_on = True
 
 def update(frame_number):
     
+    global carry_on  #Not actually needed as we're not assigning, but clearer
     fig.clear()
-    global carry_on
     
     # Process the agents in a randomish order.
     for j in range(num_of_iterations):
-        if (j % 10 == 0):
-            print("iteration", j)
-        # Shuffle agents
-        random.shuffle(agents)
-        for i in range(num_of_agents):
-            agents[i].move()
-            agents[i].eat()
-            agents[i].share_with_neighbours(neighbourhood)
-        # Stop if all agents have more than 50 store
-        for i in range(num_of_agents):
-            half_full_agent_count = 0
-            if (agents[i].store > 30):
-                half_full_agent_count += 1
-        if (half_full_agent_count == num_of_agents):
-            carry_on = False
-            print("stopping condition")
-        for i in range(num_of_agents):
-            matplotlib.pyplot.scatter(agents[i].getx(),agents[i].gety())
-            #print(agents[i].getx(),agents[i].gety())
+        if (carry_on):
+            if (j % 10 == 0):
+                print("iteration", j)
+            # Shuffle agents
+            random.shuffle(agents)
+            for i in range(num_of_agents):
+                agents[i].move()
+                agents[i].eat()
+                agents[i].share_with_neighbours(neighbourhood)
+            # Stop if all agents have more than 50 store
+            for i in range(num_of_agents):
+                half_full_agent_count = 0
+                if (agents[i].store > 30):
+                    half_full_agent_count += 1
+            if (half_full_agent_count == num_of_agents):
+                carry_on = False
+                print("stopping condition")
 
+    # Plot            
+    # Plot environment
+    pyplot.xlim(0, len(environment))
+    pyplot.ylim(0, len(environment[0]))
+    pyplot.imshow(environment)
+    # Plot sheep
+    for i in range(num_of_agents):
+        pyplot.scatter(agents[i].getx(),agents[i].gety(), color="grey")
+        #print(agents[i].getx(),agents[i].gety())
+    
 def gen_function(b = [0]):
     a = 0
     global carry_on #Not actually needed as we're not assigning, but clearer
-    while (a < 10) & (carry_on) :
-        yield a			# Returns control and waits next call.
+    while  (a < num_of_iterations) & (carry_on): 
+        yield a			#: Returns control and waits next call.
         a = a + 1
+             
+#animation = anim.FuncAnimation(fig, update, interval=1)
+#animation = anim.FuncAnimation(fig, update, interval=1, repeat=False, frames=10)
+#animation = anim.FuncAnimation(fig, update, interval=1, repeat=False, frames=num_of_iterations)
+animation = anim.FuncAnimation(fig, update, frames=gen_function, repeat=False)
+"""Create animated plot. Continues to update the plot until stopping criteria is met.""" 
 
-#animation = matplotlib.animation.FuncAnimation(fig, update, interval=1)
-#animation = matplotlib.animation.FuncAnimation(fig, update, interval=1, repeat=False, frames=10)
-animation = matplotlib.animation.FuncAnimation(fig, update, interval=1, repeat=False, frames=num_of_iterations)
-
-'''
-matplotlib.pyplot.xlim(0, len(environment))
-matplotlib.pyplot.ylim(0, len(environment[0]))
-matplotlib.pyplot.imshow(environment)
-for i in range(num_of_agents):
-    matplotlib.pyplot.scatter(agents[i].getx(),agents[i].gety())
-'''
-
-#matplotlib.pyplot.show()
-        
+#pyplot.show()
+"""Display the plot."""
 
 def run():
-    animation = matplotlib.animation.FuncAnimation(fig, update, frames=gen_function, repeat=False)
+    global animation
+    animation = anim.FuncAnimation(fig, update, frames=gen_function, repeat=False)
     canvas.show()
-
-
 
 canvas = matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(fig, master=root)
 canvas._tkcanvas.pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=1) 
@@ -198,6 +205,17 @@ menu_bar = tkinter.Menu(root)
 root.config(menu=menu_bar)
 model_menu = tkinter.Menu(menu_bar)
 menu_bar.add_cascade(label="Model", menu=model_menu)
-model_menu.add_command(label="Run model", command=run) 
+model_menu.add_command(label="Run model", command=run)
+model_menu.add_command(label="Exit", command=root.quit) 
+model_menu.add_command(label="Destroy", command=root.destroy)
+
+'''
+Failed attempt to get the process to quit on closing the Main window (root)
+root.protocol('WM_DELETE_WINDOW', exit) 
+def exit():
+    #root.quit
+    root.destroy
+    sys.exit(0)
+'''
 
 tkinter.mainloop() # Wait for interactions.

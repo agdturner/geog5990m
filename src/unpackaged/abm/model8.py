@@ -1,17 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-__version__  0.1.0
-I am wanting to get the agents wandering about on the Environment, but this 
-needs more work...
+__version__  1.0.0
 """
 import csv
-import matplotlib
 import agentframework7 as af
 import random
-import matplotlib.pyplot
+import matplotlib.pyplot as pyplot
 from sys import argv
-import matplotlib.animation 
+import matplotlib.animation as anim
 
 '''
 Step 1: Initialise parameters
@@ -20,7 +17,7 @@ print("Step 1: Initialise parameters")
 print("argv", argv)
 if len(argv) < 5:
     num_of_agents = 10
-    num_of_iterations = 10
+    num_of_iterations = 100
     neighbourhood = 20
     random_seed = 0
     print("argv does not contain the expected number of arguments")
@@ -76,58 +73,70 @@ for i in range(num_of_agents):
 Step 4: Animate acting agents.
 '''
 print("Step 4: Animate acting agents.")
-fig = matplotlib.pyplot.figure(figsize=(7, 7))
+fig = pyplot.figure(figsize=(7, 7))
 ax = fig.add_axes([0, 0, 1, 1])
 
 carry_on = True
 
 def update(frame_number):
+    
+    global carry_on  #Not actually needed as we're not assigning, but clearer
+    
+    # Clear fig
     fig.clear()
-    global carry_on
+            
     # Process the agents in a randomish order.
     for j in range(num_of_iterations):
-        if (j % 10 == 0):
-            print("iteration", j)
-        # Shuffle agents
-        #agents = random.shuffle(agents)
-        #random.shuffle(agents[, random.random()])
-        random.shuffle(agents)
-        for i in range(num_of_agents):
-            agents[i].move()
-            agents[i].eat()
-            agents[i].share_with_neighbours(neighbourhood)
-        # Stop if all agents have more than 50 store
-        for i in range(num_of_agents):
-            half_full_agent_count = 0
-            if (agents[i].store > 30):
-                half_full_agent_count += 1
-        if (half_full_agent_count == num_of_agents):
-            carry_on = False
-            print("stopping condition")
-        ''' Stop randomly
-        if random.random() < 0.1:
-            carry_on = False
-            print("stopping condition")
-        '''
-        for i in range(num_of_agents):
-            matplotlib.pyplot.scatter(agents[i].getx(),agents[i].gety())
-            #print(agents[i].getx(),agents[i].gety())
-        
+        if (carry_on):
+            if (j % 10 == 0):
+                print("iteration", j)
+            # Shuffle agents
+            #agents = random.shuffle(agents)
+            #random.shuffle(agents[, random.random()])
+            random.shuffle(agents)
+            for i in range(num_of_agents):
+                agents[i].move()
+                agents[i].eat()
+                agents[i].share_with_neighbours(neighbourhood)
+            # Stop if all agents have more than 50 store
+            for i in range(num_of_agents):
+                half_full_agent_count = 0
+                if (agents[i].store > 30):
+                    half_full_agent_count += 1
+            if (half_full_agent_count == num_of_agents):
+                carry_on = False
+                print("stopping condition")
+            ''' Stop randomly
+            if random.random() < 0.1:
+                carry_on = False
+                print("stopping condition")
+            '''
+    # Plot            
+    # Plot environment
+    pyplot.xlim(0, len(environment))
+    pyplot.ylim(0, len(environment[0]))
+    pyplot.imshow(environment)
+    # Plot sheep
+    for i in range(num_of_agents):
+        pyplot.scatter(agents[i].getx(),agents[i].gety(), color="grey")
+        #print(agents[i].getx(),agents[i].gety())
+    
+       
 def gen_function(b = [0]):
     a = 0
     global carry_on #Not actually needed as we're not assigning, but clearer
-    while (a < 10) & (carry_on) :
-        yield a			# Returns control and waits next call.
+    while  (a < num_of_iterations) & (carry_on): 
+        yield a			#: Returns control and waits next call.
         a = a + 1
+        
+#animation = anim.FuncAnimation(fig, update, interval=1)
+#animation = anim.FuncAnimation(fig, update, interval=1, repeat=False, frames=10)
+#animation = anim.FuncAnimation(fig, update, interval=1, repeat=False, frames=num_of_iterations)
+animation = anim.FuncAnimation(fig, update, frames=gen_function, repeat=False)
+"""Create animated plot. Continues to update the plot until stopping criteria is met.""" 
 
-#animation = matplotlib.animation.FuncAnimation(fig, update, interval=1)
-#animation = matplotlib.animation.FuncAnimation(fig, update, interval=1, repeat=False, frames=10)
-animation = matplotlib.animation.FuncAnimation(fig, update, interval=1, repeat=False, frames=num_of_iterations)
-
-matplotlib.pyplot.xlim(0, len(environment))
-matplotlib.pyplot.ylim(0, len(environment[0]))
-matplotlib.pyplot.imshow(environment)
-matplotlib.pyplot.show()
+pyplot.show()
+"""Display the plot."""
 
 '''
 Step 5: Write out the environment to the file dataout.csv.
