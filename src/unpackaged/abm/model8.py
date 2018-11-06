@@ -86,10 +86,12 @@ def update(frame_number):
     fig.clear()
             
     # Process the agents in a randomish order.
-    for j in range(num_of_iterations):
+    #for j in range(num_of_iterations):
+    # The number of iterations is now controlled in the gen_function
+    if True:
         if (carry_on):
-            if (j % 10 == 0):
-                print("iteration", j)
+            #if (j % 10 == 0):
+            #    print("iteration", j)
             # Shuffle agents
             #agents = random.shuffle(agents)
             #random.shuffle(agents[, random.random()])
@@ -101,7 +103,7 @@ def update(frame_number):
             # Stop if all agents have more than 50 store
             for i in range(num_of_agents):
                 half_full_agent_count = 0
-                if (agents[i].store > 30):
+                if (agents[i].store > 50):
                     half_full_agent_count += 1
             if (half_full_agent_count == num_of_agents):
                 carry_on = False

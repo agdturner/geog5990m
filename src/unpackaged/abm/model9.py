@@ -148,24 +148,21 @@ def update(frame_number):
     fig.clear()
     
     # Process the agents in a randomish order.
-    for j in range(num_of_iterations):
-        if (carry_on):
-            if (j % 10 == 0):
-                print("iteration", j)
-            # Shuffle agents
-            random.shuffle(agents)
-            for i in range(num_of_agents):
-                agents[i].move()
-                agents[i].eat()
-                agents[i].share_with_neighbours(neighbourhood)
-            # Stop if all agents have more than 50 store
-            for i in range(num_of_agents):
-                half_full_agent_count = 0
-                if (agents[i].store > 30):
-                    half_full_agent_count += 1
-            if (half_full_agent_count == num_of_agents):
-                carry_on = False
-                print("stopping condition")
+    if (carry_on):
+        # Shuffle agents
+        random.shuffle(agents)
+        for i in range(num_of_agents):
+            agents[i].move()
+            agents[i].eat()
+            agents[i].share_with_neighbours(neighbourhood)
+        # Stop if all agents have more than 50 store
+        for i in range(num_of_agents):
+            half_full_agent_count = 0
+            if (agents[i].store > 30):
+                half_full_agent_count += 1
+        if (half_full_agent_count == num_of_agents):
+            carry_on = False
+            print("stopping condition")
 
     # Plot            
     # Plot environment
@@ -209,13 +206,13 @@ model_menu.add_command(label="Run model", command=run)
 model_menu.add_command(label="Exit", command=root.quit) 
 model_menu.add_command(label="Destroy", command=root.destroy)
 
-'''
-Failed attempt to get the process to quit on closing the Main window (root)
-root.protocol('WM_DELETE_WINDOW', exit) 
-def exit():
-    #root.quit
-    root.destroy
-    sys.exit(0)
-'''
+# The process is quit as well as destroying the main window (root) on exit
+def exiting():
+    #print("we're here")
+    root.quit()
+    root.destroy()
+    #sys.exit(0)
+
+root.protocol('WM_DELETE_WINDOW', exiting) 
 
 tkinter.mainloop() # Wait for interactions.
