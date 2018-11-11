@@ -1,2 +1,0 @@
-python -i model.py
-

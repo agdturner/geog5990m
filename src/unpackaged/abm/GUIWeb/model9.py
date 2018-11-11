@@ -22,6 +22,7 @@ import bs4
 #import urllib.request
 #from bs4 import BeautifulSoup as soup
 #import sys
+import os
 
 """
 Step 1: Initialise parameters
@@ -30,7 +31,7 @@ print("Step 1: Initialise parameters")
 print("argv", argv)
 if len(argv) < 6:
     num_of_agents = 10
-    num_of_iterations = 100
+    num_of_iterations = 20
     neighbourhood = 20
     random_seed = 0
     agent_store = 90
@@ -110,8 +111,25 @@ environment in which agents act.
 print("Step 4: Initialise environment this will contain data about the",
       "spatial environment in which agents act.")
 environment = []
+# Initialise data dirs.
+dir = os.getcwd()
+#print(dir)
+parent = os.path.dirname(dir)
+print(parent)
+parent = os.path.dirname(parent)
+parent = os.path.dirname(parent)
+basedir = os.path.dirname(parent)
+#print(basedir)
+datadir = os.path.join(basedir, 'data')
+#print(datadir)
+inputdatadir = os.path.join(datadir, 'input')
+#print(inputdatadir)
+outputdatadir = os.path.join(datadir, 'output')
+#print(outputdatadir)
+# Open file and read.
+file = os.path.join(inputdatadir, 'in.txt')
 # read csv into environment
-with open('in.txt', newline='') as f:
+with open(file, newline='') as f:
     reader = csv.reader(f, quoting=csv.QUOTE_NONNUMERIC)
     for row in reader:
         rowlist = []
@@ -217,8 +235,8 @@ def gen_function(b = [0]):
         a = a + 1
         total_ite += 1
     halted = True
-    if (a >= num_of_iterations):
-        print(" run stopped after", num_of_iterations, "iterations.")
+    if (a == num_of_iterations):
+        print(" run stopped after", total_ite, "iterations.")
     else:
         print(total_ite, "iterations.")
         exiting()
@@ -258,9 +276,39 @@ two commented lines of code are no longer needed.
 # The process is quit as well as destroying the main window (root) on exit
 def exiting():
     """
-    Exits the program and kills the GUI window if the GUI window is closed.
+    Write output files and exits killing the GUI window.
     """
-    print("Step 8: End Program.")
+    if halted == False:
+        print(" run stopped after", total_ite, "iterations.")
+    
+    '''
+    Step 8: Write out the environment to the file dataout.csv.
+    '''
+    print("Step 8: Write out the environment to the file dataout.csv.")
+    file = os.path.join(outputdatadir, 'dataout.csv')
+    with open(file, 'w', newline='') as f2:
+        writer = csv.writer(f2, delimiter=' ')
+        for row in environment:
+            writer.writerow(row)
+    
+    '''
+    Step 9: Calculate total amount stored by all the agents and append this to the
+    file dataout2.txt.
+    '''
+    print("Step 9: Calculate total amount stored by all the agents and append",
+          "this to the file dataout2.txt.")
+    total = 0
+    for a in agents:
+        total += a.store
+        #print(total)
+    # Append total to dataout2.txt
+    file = os.path.join(outputdatadir, 'dataout2.txt')
+    with open(file, "a") as f3:
+        f3.write(str(total) + "\n")
+        #f3.write("\n")
+        f3.flush  
+    f3.close
+    print("Step 10: End Program.")
     #print("we're here")
     root.quit()
     root.destroy()

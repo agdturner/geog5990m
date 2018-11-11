@@ -10,6 +10,7 @@ import random
 #import operator
 import matplotlib.pyplot
 from sys import argv
+import os
 
 '''
 Step 1: Initialise parameters
@@ -48,8 +49,25 @@ environment in which agents act.
 print("Step 2: Initialise environment this will contain data about the",
       "spatial environment in which agents act.")
 environment = []
+# Initialise data dirs.
+dir = os.getcwd()
+#print(dir)
+parent = os.path.dirname(dir)
+print(parent)
+parent = os.path.dirname(parent)
+parent = os.path.dirname(parent)
+basedir = os.path.dirname(parent)
+#print(basedir)
+datadir = os.path.join(basedir, 'data')
+#print(datadir)
+inputdatadir = os.path.join(datadir, 'input')
+#print(inputdatadir)
+outputdatadir = os.path.join(datadir, 'output')
+#print(outputdatadir)
+# Open file and read.
+file = os.path.join(inputdatadir, 'in.txt')
 # read csv into environment
-with open('in.txt', newline='') as f:
+with open(file, newline='') as f:
     reader = csv.reader(f, quoting=csv.QUOTE_NONNUMERIC)
     for row in reader:
         rowlist = []
@@ -103,7 +121,8 @@ matplotlib.pyplot.show()
 Step 6: Write out the environment to the file dataout.csv.
 '''
 print("Step 6: Write out the environment to the file dataout.csv.")
-with open('dataout.csv', 'w', newline='') as f2:
+file = os.path.join(outputdatadir, 'dataout.csv')
+with open(file, 'w', newline='') as f2:
     writer = csv.writer(f2, delimiter=' ')
     for row in environment:
         writer.writerow(row)
@@ -119,7 +138,8 @@ for a in agents:
     total += a.store
     #print(total)
 # Append total to dataout2.txt
-with open("dataout2.txt", "a") as f3:
+file = os.path.join(outputdatadir, 'dataout2.txt')
+with open(file, "a") as f3:
     f3.write(str(total) + "\n")
     #f3.write("\n")
     f3.flush  
