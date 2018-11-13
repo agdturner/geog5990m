@@ -13,3 +13,6 @@ def remove_emoticons(string):
     
        
 answer = remove_emoticons(string_with_emoticons)
+
+print("string_with_emoticons: \"", string_with_emoticons, "\"", sep='')
+print("string_with_emoticons removed: \"", answer, "\"", sep='')

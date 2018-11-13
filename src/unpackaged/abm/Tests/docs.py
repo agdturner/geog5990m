@@ -26,7 +26,9 @@ class Calc():
     
         Returns:
         Sum of the two numbers.
-        
+
+        To run the doctest run "python -m doctest -v docs.py"
+
         >>> a = Calc()
         >>> a.add(1,2)
         3
