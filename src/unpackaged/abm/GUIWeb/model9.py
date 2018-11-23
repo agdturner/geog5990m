@@ -3,7 +3,10 @@
 """
 __version__  0.1.0
 
-This model is run from a GUI in which there is a run menugenerates a number of agents and 
+This model is run from a GUI in which there is a run menu.
+When you run this code it is expected that a window will appear on your 
+computer screen. To run the model, find this window and select run from the
+menu bar.
 """
 import agentframework9 as af
 import random

@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module agentframework9</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>agentframework9</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:c%3A%5Ctemp%5Cgeog5990m%5Cgeog5990m%5Csrc%5Cunpackaged%5Cabm%5Cguiweb%5Cagentframework9.py">c:\temp\geog5990m\geog5990m\src\unpackaged\abm\guiweb\agentframework9.py</a></font></td></tr></table>
+    <p><tt>__version__&nbsp;&nbsp;1.0.0<br>
+&nbsp;<br>
+Holds&nbsp;a&nbsp;basic&nbsp;<a href="#Agent">Agent</a>&nbsp;class.&nbsp;Agents&nbsp;have&nbsp;a&nbsp;location&nbsp;in&nbsp;a&nbsp;2D&nbsp;plane&nbsp;represented&nbsp;by&nbsp;<br>
+a&nbsp;raster&nbsp;environment&nbsp;which&nbsp;is&nbsp;shared&nbsp;as&nbsp;is&nbsp;a&nbsp;list&nbsp;of&nbsp;all&nbsp;other&nbsp;agents&nbsp;with&nbsp;all&nbsp;<br>
+other&nbsp;agents&nbsp;in&nbsp;the&nbsp;environment.</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="random.html">random</a><br>
+</td><td width="25%" valign=top></td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="agentframework9.html#Agent">Agent</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Agent">class <strong>Agent</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#Agent">Agent</a>(environment,&nbsp;agents,&nbsp;random_seed,&nbsp;x,&nbsp;y)<br>
+&nbsp;<br>
+<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Agent-__init__"><strong>__init__</strong></a>(self, environment, agents, random_seed, x, y)</dt><dd><tt>Initialises&nbsp;an&nbsp;agent.<br>
+&nbsp;<br>
+Postional&nbsp;arguments:<br>
+environment&nbsp;--&nbsp;the&nbsp;raster&nbsp;environment&nbsp;to&nbsp;be&nbsp;shared&nbsp;with&nbsp;all&nbsp;agents.<br>
+agents&nbsp;--&nbsp;a&nbsp;reference&nbsp;to&nbsp;all&nbsp;agents&nbsp;in&nbsp;environmet<br>
+random_seed&nbsp;--&nbsp;a&nbsp;number&nbsp;used&nbsp;to&nbsp;initialise&nbsp;the&nbsp;random&nbsp;seed&nbsp;for&nbsp;this&nbsp;<br>
+agent<br>
+x&nbsp;--&nbsp;the&nbsp;x&nbsp;axis&nbsp;locational&nbsp;coordinate&nbsp;for&nbsp;this&nbsp;agent.<br>
+y&nbsp;--&nbsp;the&nbsp;y&nbsp;axis&nbsp;locational&nbsp;coordinate&nbsp;for&nbsp;this&nbsp;agent.</tt></dd></dl>
+
+<dl><dt><a name="Agent-__str__"><strong>__str__</strong></a>(self)</dt><dd><tt>Returns:<br>
+A&nbsp;description&nbsp;of&nbsp;the&nbsp;agent&nbsp;detailing&nbsp;it's&nbsp;location&nbsp;and&nbsp;store.</tt></dd></dl>
+
+<dl><dt><a name="Agent-distance_between"><strong>distance_between</strong></a>(self, agent)</dt><dd><tt>Calculate&nbsp;and&nbsp;return&nbsp;the&nbsp;distance&nbsp;between&nbsp;self&nbsp;and&nbsp;agent.<br>
+&nbsp;<br>
+Postional&nbsp;arguments:<br>
+agent&nbsp;--&nbsp;an&nbsp;instance&nbsp;of&nbsp;this&nbsp;<a href="#Agent">Agent</a>&nbsp;class<br>
+&nbsp;<br>
+Returns:<br>
+The&nbsp;distance&nbsp;between&nbsp;self&nbsp;and&nbsp;agent.</tt></dd></dl>
+
+<dl><dt><a name="Agent-eat"><strong>eat</strong></a>(self)</dt><dd><tt><a href="#Agent">Agent</a>&nbsp;eats/removes&nbsp;some&nbsp;of&nbsp;environemnt.&nbsp;If&nbsp;their&nbsp;store&nbsp;gets&nbsp;to&nbsp;be&nbsp;<br>
+greater&nbsp;than&nbsp;100,&nbsp;then&nbsp;50%&nbsp;of&nbsp;it&nbsp;is&nbsp;dumped&nbsp;into&nbsp;the&nbsp;environment.</tt></dd></dl>
+
+<dl><dt><a name="Agent-getx"><strong>getx</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Agent-gety"><strong>gety</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Agent-hi"><strong>hi</strong></a>(self)</dt><dd><tt>Prints&nbsp;the&nbsp;<a href="#Agent">Agent</a>&nbsp;location&nbsp;of&nbsp;an&nbsp;agent&nbsp;to&nbsp;std.out</tt></dd></dl>
+
+<dl><dt><a name="Agent-move"><strong>move</strong></a>(self)</dt><dd><tt>Moves&nbsp;an&nbsp;agent&nbsp;though&nbsp;there&nbsp;is&nbsp;a&nbsp;1&nbsp;in&nbsp;3&nbsp;chance&nbsp;of&nbsp;not&nbsp;moving&nbsp;in&nbsp;either&nbsp;<br>
+the&nbsp;x&nbsp;or&nbsp;y&nbsp;direction.</tt></dd></dl>
+
+<dl><dt><a name="Agent-setx"><strong>setx</strong></a>(self, value)</dt></dl>
+
+<dl><dt><a name="Agent-sety"><strong>sety</strong></a>(self, value)</dt></dl>
+
+<dl><dt><a name="Agent-share_with_neighbours"><strong>share_with_neighbours</strong></a>(self, neighbourhood)</dt><dd><tt><a href="#Agent">Agent</a>&nbsp;shares&nbsp;some&nbsp;of&nbsp;store&nbsp;with&nbsp;neighbours.<br>
+&nbsp;<br>
+Postional&nbsp;arguments:<br>
+neighbourhood&nbsp;--&nbsp;the&nbsp;distance&nbsp;within&nbsp;which&nbsp;agents&nbsp;share&nbsp;an&nbsp;instance&nbsp;of&nbsp;this&nbsp;<a href="#Agent">Agent</a>&nbsp;class</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>x</strong></dt>
+<dd><tt>I'm&nbsp;the&nbsp;'x'&nbsp;property.</tt></dd>
+</dl>
+<dl><dt><strong>y</strong></dt>
+<dd><tt>I'm&nbsp;the&nbsp;'y'&nbsp;property.</tt></dd>
+</dl>
+</td></tr></table></td></tr></table>
+</body></html>

@@ -17,14 +17,15 @@ for i in range(n):
     a2D.append(a1D)
     for j in range(n):
         #a1D.append(v)
-        a1D.append(a2D)
+        a1D.append(a2D) # This is a crazy line as we are appending the 2D array to itself and it breaks the plotting code.
 
-print("Here 2")
-#sys.stdout.flush()
+print("Here")
+sys.stdout.flush() # This forces the print buffer to flush.
+# If we do not force the print buffer to flush the program hangs without printing "Here"
 
-'''
+# If we comment out the matplotlib lines this program ends and flushes the print buffer.
 matplotlib.pyplot.xlim(0, 99)
 matplotlib.pyplot.ylim(0, 99)
 matplotlib.pyplot.imshow(a2D)
 matplotlib.pyplot.show()
-'''
+
