@@ -10,6 +10,8 @@ import matplotlib.pyplot as pyplot
 from sys import argv
 import matplotlib.animation as anim
 import os
+from multiprocessing import Process
+import time
 
 '''
 Step 1: Initialise parameters
@@ -62,6 +64,8 @@ datadir = os.path.join(basedir, 'data')
 inputdatadir = os.path.join(datadir, 'input')
 #print(inputdatadir)
 outputdatadir = os.path.join(datadir, 'output')
+if not os.path.exists(outputdatadir):
+    os.makedirs(outputdatadir)
 #print(outputdatadir)
 # Open file and read.
 file = os.path.join(inputdatadir, 'in.txt')
@@ -86,18 +90,26 @@ for i in range(num_of_agents):
     random_seed += 1
     agents.append(af.Agent(environment, agents, random_seed))
 
-
-'''
-Step 4: Animate acting agents.
-'''
-print("Step 4: Animate acting agents.")
+carry_on = True
 fig = pyplot.figure(figsize=(7, 7))
 ax = fig.add_axes([0, 0, 1, 1])
 
-carry_on = True
+def wait_fig(): 
+    # Block the execution of the code until the figure is closed.
+    # This works even with multiprocessing.
+    if pyplot.isinteractive():
+        pyplot.ioff() # this is necessary in mutliprocessing
+        #pyplot.show(block=True)
+        pyplot.show(block=False)
+        pyplot.ion() # restitute the interractive state
+    else:
+        #pyplot.show(block=True)       
+        pyplot.show(block=False)
+    pyplot.pause(3)
+    pyplot.close()
+    return    
 
 def update(frame_number):
-    
     global carry_on  #Not actually needed as we're not assigning, but clearer
     
     # Clear fig
@@ -140,48 +152,84 @@ def update(frame_number):
     for i in range(num_of_agents):
         pyplot.scatter(agents[i].getx(),agents[i].gety(), color="grey")
         #print(agents[i].getx(),agents[i].gety())
-    
-       
+        
+           
 def gen_function(b = [0]):
     a = 0
     global carry_on #Not actually needed as we're not assigning, but clearer
     while  (a < num_of_iterations) & (carry_on): 
         yield a			#: Returns control and waits next call.
         a = a + 1
+            
+def runAnimation():
+    '''
+    Step 4: Animate agents.
+    '''
+    print("Step 4: Animate agents.")
+    
+    
+    #animation = anim.FuncAnimation(fig, update, interval=1)
+    #animation = anim.FuncAnimation(fig, update, interval=1, repeat=False, frames=10)
+    #animation = anim.FuncAnimation(fig, update, interval=1, repeat=False, frames=num_of_iterations)
+    animation = anim.FuncAnimation(fig, update, frames=gen_function(), repeat=False)
+    """Create animated plot. Continues to update the plot until stopping criteria is met.""" 
+    
+    pyplot.show()
+    """Display the plot."""
+    wait_fig()
+    return
+
+def main(): # it is important that ALL the code be typed inside 
+           # this function, otherwise the program will do weird 
+           # things with the Ipython or even the Python console. 
+           # Outside of this condition, type nothing but import
+           # clauses and function/class definitions.
+    if __name__ != '__main__': return                      
+    
+    p = Process(target=runAnimation())
+    p.start()
+    print('hello', flush = True) #just to have something printed here
+    p.join() # suppress this command if you want the animation be executed in
+             # parallel with the subsequent code
+    for i in range(3): # This allows to see if execution takes place after the 
+                       #process above, as should be the case because of p.join().
+        print('world', flush = True) 
+        time.sleep(1)
         
-#animation = anim.FuncAnimation(fig, update, interval=1)
-#animation = anim.FuncAnimation(fig, update, interval=1, repeat=False, frames=10)
-#animation = anim.FuncAnimation(fig, update, interval=1, repeat=False, frames=num_of_iterations)
-animation = anim.FuncAnimation(fig, update, frames=gen_function, repeat=False)
-"""Create animated plot. Continues to update the plot until stopping criteria is met.""" 
+    pyplot.close()
+    '''
+    Step 5: Write out the environment to the file dataout.csv.
+    '''
+    print("Step 5: Write out the environment to the file dataout.csv.")
+    file = os.path.join(outputdatadir, 'dataout.csv')
+    with open(file, 'w', newline='') as f2:
+        writer = csv.writer(f2, delimiter=' ')
+        for row in environment:
+            writer.writerow(row)
+    
+    '''
+    Step 6: Calculate total amount stored by all the agents and append this to the
+    file dataout2.txt.
+    '''
+    print("Step 6: Calculate total amount stored by all the agents and append",
+          "this to the file dataout2.txt.")
+    total = 0
+    for a in agents:
+        total += a.store
+        #print(total)
+    print("total", total)
+    # Append total to dataout2.txt
+    file = os.path.join(outputdatadir, 'dataout2.txt')
+    with open(file, "a") as f3:
+        f3.write(str(total) + "\n")
+        #f3.write("\n")
+        f3.flush  
+    f3.close
+    
 
-pyplot.show()
-"""Display the plot."""
+main()
 
-'''
-Step 5: Write out the environment to the file dataout.csv.
-'''
-print("Step 5: Write out the environment to the file dataout.csv.")
-file = os.path.join(outputdatadir, 'dataout.csv')
-with open(file, 'w', newline='') as f2:
-    writer = csv.writer(f2, delimiter=' ')
-    for row in environment:
-        writer.writerow(row)
 
-'''
-Step 6: Calculate total amount stored by all the agents and append this to the
-file dataout2.txt.
-'''
-print("Step 6: Calculate total amount stored by all the agents and append",
-      "this to the file dataout2.txt.")
-total = 0
-for a in agents:
-    total += a.store
-    #print(total)
-# Append total to dataout2.txt
-file = os.path.join(outputdatadir, 'dataout2.txt')
-with open(file, "a") as f3:
-    f3.write(str(total) + "\n")
-    #f3.write("\n")
-    f3.flush  
-f3.close
+
+
+
