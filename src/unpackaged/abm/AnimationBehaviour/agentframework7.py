@@ -8,7 +8,27 @@ import random
 class Agent():
     
     #def __init__(self, environment):
-    def __init__(self, environment, agents, random_seed):
+    def __init__(self, environment, agents, x, y):
+        """
+        
+
+        Parameters
+        ----------
+        environment : List of lists containing numbers
+            Each list in the list should have the same length. This is a 
+            rectangular 2D dataset representing something like a haystack.
+        agents : List of Agent instances.
+            These are the main agents in the Agent Based Model (ABM). They can 
+            be thought of as goats eating that can eat the environment and 
+            share their store with those nearby.
+        random_seed : TYPE
+            DESCRIPTION.
+
+        Returns
+        -------
+        None.
+
+        """
         self.environment = environment
         self.agents = agents
         self.store = 0
@@ -17,11 +37,8 @@ class Agent():
         self.height = len(environment[0])
         #print("width", self.width)
         #print("height", self.height)
-        # Seed random so that the same results are attained each time
-        #print("random_seed", random_seed)
-        random.seed(random_seed)
-        self._x = random.randint(0,self.width)
-        self._y = random.randint(0,self.height)
+        self._x = x % self.width
+        self._y = y % self.height
         #self._x = random.randint(0,99)
         #self._y = random.randint(0,99)
         #print("x", self._x)

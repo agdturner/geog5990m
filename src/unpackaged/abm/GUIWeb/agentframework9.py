@@ -148,7 +148,7 @@ class Agent():
         Postional arguments:
         agent -- an instance of this Agent class
         
-        Returns:
+        Returns: Number
         The distance between self and agent.
         """
         return (((self.x - agent.x)**2) + ((self.y - agent.y)**2))**0.5 

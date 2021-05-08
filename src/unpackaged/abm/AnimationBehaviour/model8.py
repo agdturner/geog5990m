@@ -41,6 +41,7 @@ print("num_of_agents", str(num_of_agents))
 print("num_of_iterations", str(num_of_iterations))
 print("neighbourhood", str(neighbourhood))
 print("random_seed", str(random_seed))
+# Set random seed for reproducibility
 random.seed(random_seed)
 
 '''
@@ -88,7 +89,9 @@ agents = []
 for i in range(num_of_agents):
     # Add 1 to random seed to get each agent initialised and moving differently
     random_seed += 1
-    agents.append(af.Agent(environment, agents, random_seed))
+    agents.append(af.Agent(environment, agents,
+                           random.randint(0,len(environment)),
+                           random.randint(0,len(environment[0]))))
 
 carry_on = True
 fig = pyplot.figure(figsize=(7, 7))
@@ -188,13 +191,13 @@ def main(): # it is important that ALL the code be typed inside
     
     p = Process(target=runAnimation())
     p.start()
-    print('hello', flush = True) #just to have something printed here
+    #print('hello', flush = True) #just to have something printed here
     p.join() # suppress this command if you want the animation be executed in
              # parallel with the subsequent code
-    for i in range(3): # This allows to see if execution takes place after the 
-                       #process above, as should be the case because of p.join().
-        print('world', flush = True) 
-        time.sleep(1)
+    #for i in range(3): # This allows to see if execution takes place after the 
+    #                   # process above, as should be the case because of p.join().
+    #    print('world', flush = True) 
+    #    time.sleep(1)
         
     pyplot.close()
     '''

@@ -10,6 +10,7 @@ Created on Sat Nov 10 19:12:48 2018
 import tkinter
 import tkinter.ttk as ttk
 import threading
+import threading.ThreadedTask
 import time
 import queue
 
@@ -43,7 +44,7 @@ class GUI:
         print("Stop Task", self.value)
         self.bstart.configure(state='normal')
         self.bstop.configure(state='disabled')
-        self.pb.
+        self.pb.stop()
         
     def process_queue(self):
         try:
